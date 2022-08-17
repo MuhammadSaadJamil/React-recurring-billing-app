@@ -1,0 +1,21 @@
+.subscription-card {
+    background: white;
+    border: 1px solid dodgerblue;
+    border-radius: 2rem;
+    margin-bottom: 1rem;
+}
+
+.card-head {
+    border-radius: 1.9rem 1.9rem 0 0;
+    background: #4485c7;
+    padding: 1rem;
+    color: white;
+}
+
+.card-detail {
+    padding: 1rem;
+}
+
+.table tr {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}

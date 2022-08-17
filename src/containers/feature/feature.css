@@ -1,0 +1,12 @@
+@media screen and (max-width: 750px) {
+    .scroll-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .scroll-table tbody thead {
+        display: table;
+        width: 100%;
+    }
+}
