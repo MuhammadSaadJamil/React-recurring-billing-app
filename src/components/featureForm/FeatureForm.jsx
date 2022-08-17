@@ -4,8 +4,11 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import {useState} from "react";
 import {updateForm, postFeature} from "./helper";
+import FormInput from "../formInput/FormInput";
 
 function FeatureForm(props) {
+    const statusList = {success: 'success', error: 'error', initial: null}
+    const [submitStatus, setSubmitStatus] = useState(statusList.initial);
     const [formData, setFormData] = useState({
         name: '',
         code: '',
@@ -31,81 +34,61 @@ function FeatureForm(props) {
         const err = !formData.name || !formData.code || !formData.unit_price || !formData.max_unit_limit
         if (!(errors.name || errors.unit_price || errors.max_unit_limit || errors.code || err)) {
             postFeature('http://localhost:8000/api/features/', formData, setFormData)
+            setSubmitStatus(statusList.success)
         } else {
-            console.log('Nope')
+            setSubmitStatus(statusList.error)
         }
 
     }
 
     return (
         <Form onSubmit={submit}>
-            <Form.Group className="mb-3" controlId="name">
-                <Form.Label>Name</Form.Label>
-                <Form.Control
-                    type="text"
-                    placeholder="Enter Feature Name"
-                    name='name'
-                    value={formData.name}
-                    onChange={(e) => updateForm(e, formData, setFormData, errors, setErrors)}
-                    className={errors.name ? 'is-invalid' : null}
-                />
-                {errors.name &&
-                    <Form.Text className="text-danger">
-                        Name length must be between 1 and 20
-                    </Form.Text>
-                }
-            </Form.Group>
+            {submitStatus && submitStatus == statusList.success &&
+                <div className="alert alert-success">Feature Added Successfully.</div>
+            }
+            {submitStatus && submitStatus == statusList.error &&
+                <div className="alert alert-danger">Could not add Feature.</div>
+            }
+            <FormInput
+                name='name'
+                label={'Name'}
+                value={formData.name}
+                type='text'
+                error={errors.name}
+                errorMessage="Name length must be between 1 and 20"
+                onChange={(e) => updateForm(e, formData, setFormData, errors, setErrors)}
+            />
 
-            <Form.Group className="mb-3" controlId="code">
-                <Form.Label>Code</Form.Label>
-                <Form.Control
-                    type="text"
-                    placeholder="Enter Feature Code"
-                    name='code'
-                    value={formData.code}
-                    onChange={(e) => updateForm(e, formData, setFormData, errors, setErrors)}
-                    className={errors.code ? 'is-invalid' : null}
-                />
-                {errors.code &&
-                    <Form.Text className="text-danger">
-                        Code length must be between 1 and 10
-                    </Form.Text>
-                }
-            </Form.Group>
+            <FormInput
+                name='code'
+                label={'Code'}
+                value={formData.code}
+                type='text'
+                error={errors.code}
+                errorMessage="Code length must be between 1 and 10"
+                onChange={(e) => updateForm(e, formData, setFormData, errors, setErrors)}
+            />
 
-            <Form.Group className="mb-3" controlId="unit_price">
-                <Form.Label>Price</Form.Label>
-                <Form.Control
-                    type="number"
-                    placeholder="Enter Feature Price"
-                    name='unit_price'
-                    value={formData.unit_price}
-                    onChange={(e) => updateForm(e, formData, setFormData, errors, setErrors)}
-                    className={errors.unit_price ? 'is-invalid' : null}
-                />
-                {errors.unit_price &&
-                    <Form.Text className="text-danger">
-                        Price must be a number greater than 0.01
-                    </Form.Text>
-                }
-            </Form.Group>
+            <FormInput
+                name='unit_price'
+                label='Price'
+                value={formData.unit_price}
+                type='number'
+                error={errors.unit_price}
+                errorMessage="Price must be a number greater than 0.01"
+                onChange={(e) => updateForm(e, formData, setFormData, errors, setErrors)}
+            />
 
-            <Form.Group className="mb-3" controlId="max-units">
-                <Form.Label>Max Units</Form.Label>
-                <Form.Control
-                    type="number"
-                    placeholder="Enter Feature Max Units"
-                    name='max_unit_limit'
-                    value={formData.max_unit_limit}
-                    onChange={(e) => updateForm(e, formData, setFormData, errors, setErrors)}
-                    className={errors.max_unit_limit ? 'is-invalid' : null}
-                />
-                {errors.max_unit_limit &&
-                    <Form.Text className="text-danger">
-                        Max Units must be a positive integer
-                    </Form.Text>
-                }
-            </Form.Group>
+            <FormInput
+                name='max_unit_limit'
+                label='Max Units'
+                value={formData.max_unit_limit}
+                type='number'
+                error={errors.max_unit_limit}
+                errorMessage="Max Units must be a positive integer"
+                onChange={(e) => updateForm(e, formData, setFormData, errors, setErrors)}
+            />
+
             <div className="text-center">
                 <Button variant="primary" type="submit">
                     Add Feature
