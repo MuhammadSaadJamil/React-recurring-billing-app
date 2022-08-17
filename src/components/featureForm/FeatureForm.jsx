@@ -46,6 +46,9 @@ function FeatureForm(props) {
             {submitStatus && submitStatus == statusList.success &&
                 <div className="alert alert-success">Feature Added Successfully.</div>
             }
+            {submitStatus && submitStatus == statusList.error &&
+                <div className="alert alert-danger">Could not add Feature.</div>
+            }
             <FormInput
                 name='name'
                 label={'Name'}
